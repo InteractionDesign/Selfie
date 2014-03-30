@@ -3,12 +3,9 @@ package com.example.selfi;
 import com.example.selfi.ShakeDetector.OnShakeListener;
 
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.view.Menu;
