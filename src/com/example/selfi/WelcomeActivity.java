@@ -18,8 +18,8 @@ import android.widget.Button;
 
 public class WelcomeActivity extends Activity {
 	
-	public Button button;
-	private SensorManager mSensorManager;
+    public Button button;
+    private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
@@ -33,12 +33,12 @@ public class WelcomeActivity extends Activity {
         button.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-            	Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            	 startActivityForResult(intent, 0); 
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            	startActivityForResult(intent, 0); 
             }
     });
         
-     // ShakeDetector initialization
+        // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -55,10 +55,10 @@ public class WelcomeActivity extends Activity {
                 handleShakeEvent(count);
             }
 
-			private void handleShakeEvent(int count) {
-				Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-				startActivityForResult(intent, 0);
-			}
+            private void handleShakeEvent(int count) {
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivityForResult(intent, 0);
+            }
         });
     }
     
