@@ -30,8 +30,10 @@ public class WelcomeActivity extends Activity {
         button.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            	startActivityForResult(intent, 0); 
+                //Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            	//startActivityForResult(intent, 0); 
+            	Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
+				startActivity(i);		
             }
     });
         
@@ -64,7 +66,7 @@ public class WelcomeActivity extends Activity {
     public void onResume() {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,    SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
  
     @Override
