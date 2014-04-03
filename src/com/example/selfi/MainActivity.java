@@ -9,8 +9,13 @@ import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+import 	android.os.CountDownTimer;
 
 public class MainActivity extends Activity {
 	
@@ -19,6 +24,7 @@ public class MainActivity extends Activity {
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private ShakeDetector mShakeDetector;
+	private static boolean alreadyShook = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,46 +38,31 @@ public class MainActivity extends Activity {
         mPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mPreview);
-//      mCamera.takePicture(null, null, new PictureSaver());
         
 //        Button captureButton = (Button) findViewById(R.id.button_capture);
 //        captureButton.setOnClickListener(new View.OnClickListener() {
-//                     
-//                    @Override
-//                    public void onClick(View v) {
-//                    	try {
-//                			Thread.sleep(2000);
-//                		} catch (InterruptedException e) {
-//                			e.printStackTrace();
-//                		}
-//                        mCamera.takePicture(null, null, new PictureSaver());
-//                         
-//                    }
-//                });
-//        
+//        	@Override public void onClick(View v) {
+//            	startCountdown();
+//            }
+//        });
+      
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         
+        
+        
         mShakeDetector.setOnShakeListener(new OnShakeListener() {
- 
-            @Override
-            public void onShake(int count) {
-            	//Toast.makeText(MainActivity.this, "Shake detected!", Toast.LENGTH_SHORT).show();
-            	try {
-        			Thread.sleep(2000);
-        		} catch (InterruptedException e) {
-        			e.printStackTrace();
-        		}
-            	mCamera.takePicture(null, null, new PictureSaver());
+        	 @Override public void onShake(int count) {
+        		 if (alreadyShook) {
+        			 return;
+        		 }
+        		 alreadyShook = true;
+        		 startCountdown();
             }
-        });
-        
-        
+        });   
 	}
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -88,7 +79,7 @@ public class MainActivity extends Activity {
 	public static Camera getCameraInstance(){
 	    Camera c = null;
 	    try {
-	        c = Camera.open(); // attempt to get a Camera instance
+	        c = Camera.open(1); // attempt to get a Camera instance
 	    }
 	    catch (Exception e){
 	        // Camera is not available (in use or does not exist)
@@ -117,4 +108,30 @@ public class MainActivity extends Activity {
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         
     }
+	
+	public void startCountdown() {
+		new CountDownTimer(5005, 1000) {
+            public void onTick(long millisUntilFinished) {
+            	final Toast toast = Toast.makeText(MainActivity.this, 
+            			"seconds remaining: " + millisUntilFinished / 1000, 
+            			Toast.LENGTH_SHORT);
+            	toast.show();
+            	Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       toast.cancel(); 
+                   }
+            }, 999);
+            }
+
+            public void onFinish() {
+            	Toast.makeText(MainActivity.this, 
+            			"done!", 
+            			Toast.LENGTH_SHORT).show();
+            	mCamera.takePicture(null, null, new PictureSaver());
+            	alreadyShook = false;
+            }
+         }.start();  
+	}
 }
