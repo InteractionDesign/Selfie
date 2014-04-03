@@ -11,7 +11,7 @@
     android:layout_weight="1"
     />
 
-  <!--  
+  <!--
   <Button
     android:id="@+id/button_capture"
     android:text="Capture"

@@ -4,17 +4,14 @@ import java.io.File;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
+
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 public class DisplayPictureActivity extends Activity {
