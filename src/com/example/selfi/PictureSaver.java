@@ -6,7 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Environment;
@@ -15,6 +16,11 @@ import android.util.Log;
 public class PictureSaver implements PictureCallback {
 	
 	public static final int MEDIA_TYPE_IMAGE = 1;
+	private Activity parent; // reference to activity that called this picture saver method
+	
+	public PictureSaver (Activity parent) {
+		this.parent = parent;
+	}
 
 	@Override
 	public void onPictureTaken(byte[] data, Camera camera) {
@@ -32,11 +38,15 @@ public class PictureSaver implements PictureCallback {
             Log.d("dimochka", "File not found: " + e.getMessage());
         } catch (IOException e) {
             Log.d("dimochka", "Error accessing file: " + e.getMessage());
+        } finally {
+        	// kill the activity and go back to welcome screen for now
+        	parent.finish();
         }
 		
 	}
 	
 	/** Create a File for saving an image or video */
+	@SuppressLint("SimpleDateFormat")
 	private static File getOutputMediaFile(int type){
 	    // To be safe, you should check that the SDCard is mounted
 	    // using Environment.getExternalStorageState() before doing this.

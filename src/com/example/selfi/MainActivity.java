@@ -6,13 +6,15 @@ import com.example.selfi.ShakeDetector.OnShakeListener;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.UserManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import 	android.os.CountDownTimer;
@@ -29,6 +31,11 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// hide the title
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
 		setContentView(R.layout.activity_main);
 
 		// Create an instance of Camera
@@ -37,6 +44,8 @@ public class MainActivity extends Activity {
 		mPreview = new CameraPreview(this, mCamera);
 		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
+		
+		
 
 		//        Button captureButton = (Button) findViewById(R.id.button_capture);
 		//        captureButton.setOnClickListener(new View.OnClickListener() {
@@ -74,9 +83,19 @@ public class MainActivity extends Activity {
 
 	private void getCameraInstance(){
 		if (mCamera == null) {
-			int FRONT_CAMERA = 1;
+			
+			//
+			int defaultCameraId = 0;
+			CameraInfo cameraInfo = new CameraInfo();
+			for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+			    Camera.getCameraInfo(i, cameraInfo);
+			    if (cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT) {
+			        defaultCameraId = i;
+			    }
+			}
+			
 			try {
-				mCamera = Camera.open(FRONT_CAMERA); 
+				mCamera = Camera.open(defaultCameraId); 
 			}
 			catch (Exception e){
 				Log.d("CameraActivity", "Error when getting a camera instance: " + e.getMessage());
@@ -126,7 +145,7 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, 
 						"done!", 
 						Toast.LENGTH_SHORT).show();
-				mCamera.takePicture(null, null, new PictureSaver());
+				mCamera.takePicture(null, null, new PictureSaver(MainActivity.this));
 				alreadyShook = false;
 			}
 		}.start();  
