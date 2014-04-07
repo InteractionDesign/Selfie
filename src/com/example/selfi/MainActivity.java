@@ -10,9 +10,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import 	android.os.CountDownTimer;
@@ -32,7 +31,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		// Create an instance of Camera
-		mCamera = getCameraInstance();
+		getCameraInstance();
 
 		// Create our Preview view and set it as the content of our activity.
 		mPreview = new CameraPreview(this, mCamera);
@@ -64,9 +63,6 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
@@ -74,20 +70,21 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public static Camera getCameraInstance(){
-		Camera c = null;
-		try {
-			c = Camera.open(1); // attempt to get a Camera instance
+	private void getCameraInstance(){
+		if (mCamera != null) {
+			int FRONT_CAMERA = 1;
+			try {
+				mCamera = Camera.open(FRONT_CAMERA); 
+			}
+			catch (Exception e){
+				Log.d("CameraActivity", "Error when getting a camera instance: " + e.getMessage());
+			}
 		}
-		catch (Exception e){
-			// Camera is not available (in use or does not exist)
-		}
-		return c; // returns null if camera is unavailable
 	}
 
 	private void releaseCamera(){
 		if (mCamera != null){
-			mCamera.release();        // release the camera for other applications
+			mCamera.release();
 			mCamera = null;
 		}
 	}
@@ -102,7 +99,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		// Add the following line to register the Session Manager Listener onResume
+		getCameraInstance();
 		mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
 	}
