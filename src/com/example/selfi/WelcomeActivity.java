@@ -35,7 +35,20 @@ public class WelcomeActivity extends Activity {
             	Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
 				startActivity(i);		
             }
+        
     });
+        button = (Button)findViewById(R.id.button_filter);
+		button.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				Intent k = new Intent(WelcomeActivity.this, FilterActivity.class);
+				startActivity(k);		
+
+
+			}
+		});
+		
+        
         
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
