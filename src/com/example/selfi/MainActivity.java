@@ -4,14 +4,13 @@ package com.example.selfi;
 import com.example.selfi.ShakeDetector.OnShakeListener;
 
 import android.app.Activity;
-//import android.app.Notification;
-//import android.app.NotificationManager;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.UserManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -34,7 +33,6 @@ public class MainActivity extends Activity {
 
 		// Create an instance of Camera
 		getCameraInstance();
-
 		// Create our Preview view and set it as the content of our activity.
 		mPreview = new CameraPreview(this, mCamera);
 		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
@@ -62,7 +60,7 @@ public class MainActivity extends Activity {
 			}
 		});   
 		
-//		/flashLight();
+		
 	}
 
 	@Override
@@ -134,15 +132,5 @@ public class MainActivity extends Activity {
 		}.start();  
 	}
 	
-//	public void flashLight() {
-//		int LED_NOTIFICATION_ID  = 0;
-//		
-//		NotificationManager nm = ( NotificationManager ) getSystemService( NOTIFICATION_SERVICE );
-//		Notification notif = new Notification();
-//		notif.ledARGB = 0xFFff0000;
-//		notif.flags = Notification.FLAG_SHOW_LIGHTS;
-//		notif.ledOnMS = 100; 
-//		notif.ledOffMS = 100; 
-//		nm.notify(LED_NOTIFICATION_ID, notif);
-//	}
+	
 }
