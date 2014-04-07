@@ -4,6 +4,8 @@ package com.example.selfi;
 import com.example.selfi.ShakeDetector.OnShakeListener;
 
 import android.app.Activity;
+//import android.app.Notification;
+//import android.app.NotificationManager;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Sensor;
@@ -59,6 +61,8 @@ public class MainActivity extends Activity {
 
 			}
 		});   
+		
+//		/flashLight();
 	}
 
 	@Override
@@ -71,7 +75,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void getCameraInstance(){
-		if (mCamera != null) {
+		if (mCamera == null) {
 			int FRONT_CAMERA = 1;
 			try {
 				mCamera = Camera.open(FRONT_CAMERA); 
@@ -129,4 +133,16 @@ public class MainActivity extends Activity {
 			}
 		}.start();  
 	}
+	
+//	public void flashLight() {
+//		int LED_NOTIFICATION_ID  = 0;
+//		
+//		NotificationManager nm = ( NotificationManager ) getSystemService( NOTIFICATION_SERVICE );
+//		Notification notif = new Notification();
+//		notif.ledARGB = 0xFFff0000;
+//		notif.flags = Notification.FLAG_SHOW_LIGHTS;
+//		notif.ledOnMS = 100; 
+//		notif.ledOffMS = 100; 
+//		nm.notify(LED_NOTIFICATION_ID, notif);
+//	}
 }
