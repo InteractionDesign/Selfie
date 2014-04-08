@@ -1,11 +1,14 @@
 package com.example.selfi;
 
 import java.io.IOException;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.Parameters;
+import android.hardware.Camera.Size;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -16,6 +19,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private Activity caller;
+    private Size mPictureSize; // width = 1600, height = 1200 works
 
     public CameraPreview(Activity caller, Camera camera) {
         super(caller);
@@ -26,8 +30,25 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // underlying surface is created and destroyed.
         mHolder = getHolder();
         mHolder.addCallback(this);
-        // deprecated setting, but required on Android versions prior to 3.0
-        //mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        
+        List<Size> picSizes = mCamera.getParameters().getSupportedPictureSizes();
+        mPictureSize = getOptimalPictureSize(picSizes);
+    }
+    
+    private Size getOptimalPictureSize(List<Size> pictureSizes){
+    	// we assume they are ordered from highest to lowest
+    	// we want to find one with 4/3 aspect ratio
+    	for (Size size: pictureSizes) {
+    		if (((double) size.width / 4) - ((double) size.height / 3) < 0.0001) {
+    			return size;
+    		}
+    	}
+    	return pictureSizes.get(0);
+    }
+    
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(mPictureSize.height, mPictureSize.width);
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -61,7 +82,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // set preview size and make any resize, rotate or
         // reformatting changes here
-        
+        Parameters parameters = mCamera.getParameters();
+        parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
+
+        mCamera.setParameters(parameters);
         // here 1 stands for front camera
         setCameraDisplayOrientation(this.caller, 1);        
         // start preview with new settings

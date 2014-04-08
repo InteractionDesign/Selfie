@@ -35,7 +35,6 @@ public class MainActivity extends Activity {
 		// hide the title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
 		setContentView(R.layout.activity_main);
 
 		// Create an instance of Camera
