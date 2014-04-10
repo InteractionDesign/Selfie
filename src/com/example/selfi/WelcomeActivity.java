@@ -17,6 +17,7 @@ public class WelcomeActivity extends Activity {
     public Button button;
     private String selectedImagePath;
     private static final int SELECT_PICTURE = 1;
+    private static final int CAMERA_PICTURE = 2;
     public static final String EXTRA_MESSAGE = "com.example.selfi";
 
 
@@ -32,7 +33,7 @@ public class WelcomeActivity extends Activity {
                 //Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
             	//startActivityForResult(intent, 0); 
             	Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
-				startActivity(i);		
+				startActivityForResult(i, CAMERA_PICTURE);		
             }
         });
   
@@ -80,6 +81,12 @@ public class WelcomeActivity extends Activity {
                 Intent i = new Intent(WelcomeActivity.this, DisplayPictureActivity.class);
                 i.putExtra(EXTRA_MESSAGE, selectedImagePath);
 				startActivity(i);
+            }else if(requestCode == CAMERA_PICTURE){
+            	String photoPath = data.getStringExtra("photoPath");
+                Intent i = new Intent(WelcomeActivity.this, DisplayPictureActivity.class);
+                i.putExtra(EXTRA_MESSAGE, photoPath);
+    			startActivity(i);
+                
             }
         }
     }

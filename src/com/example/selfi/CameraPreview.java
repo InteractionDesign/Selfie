@@ -5,11 +5,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
 import android.util.Log;
+import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -35,12 +37,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mPictureSize = getOptimalPictureSize(picSizes);
     }
     
-    private Size getOptimalPictureSize(List<Size> pictureSizes){
+    @SuppressLint("NewApi")
+	private Size getOptimalPictureSize(List<Size> pictureSizes){
     	// we assume they are ordered from highest to lowest
     	// we want to find one with 4/3 aspect ratio
+    	Display display = caller.getWindowManager().getDefaultDisplay();
+    	Point windowSize = new Point();
+    	display.getSize(windowSize);
+    	int width = windowSize.x;
+    	
+    	
     	for (Size size: pictureSizes) {
     		if (((double) size.width / 4) - ((double) size.height / 3) < 0.0001) {
+    			if(!(size.width < width*0.90)){
     			return size;
+    			}
     		}
     	}
     	return pictureSizes.get(0);
