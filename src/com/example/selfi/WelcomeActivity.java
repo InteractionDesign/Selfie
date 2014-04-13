@@ -1,8 +1,16 @@
 package com.example.selfi;
 
 
-import com.example.selfi.ShakeDetector.OnShakeListener;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,9 +26,10 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class WelcomeActivity extends Activity implements SensorEventListener {
+public class WelcomeActivity extends Activity implements SensorEventListener, LocationListener{
 	private SensorManager sensorManager;
 
 	public Button button;
@@ -30,6 +39,11 @@ public class WelcomeActivity extends Activity implements SensorEventListener {
 	private String selectedImagePath;
 	private static final int SELECT_PICTURE = 1;
 	public static final String EXTRA_MESSAGE = "com.example.selfi";
+	private TextView latituteField;
+	private TextView longitudeField;
+	private TextView city;
+	private LocationManager locationManager;
+	private String provider;
 
 
 	@Override
@@ -44,7 +58,7 @@ public class WelcomeActivity extends Activity implements SensorEventListener {
 				//Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 				//startActivityForResult(intent, 0); 
 				Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
-				startActivity(i);		
+				startActivity(i);	
 			}
 		});
 
@@ -90,15 +104,35 @@ public class WelcomeActivity extends Activity implements SensorEventListener {
 			}
 		});
 
-
-
 		sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
 		// add listener. The listener will be HelloAndroid (this) class
 		sensorManager.registerListener(this, 
 				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_NORMAL);
 
+		latituteField = (TextView) findViewById(R.id.TextView02);
+		longitudeField = (TextView) findViewById(R.id.TextView04);
+		city = (TextView) findViewById(R.id.TextView06);
 
+		// Get the location manager
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+		// Define the criteria how to select the locatioin provider -> use
+		// default
+		Criteria criteria = new Criteria();
+		provider = locationManager.getBestProvider(criteria, false);
+		Location location = locationManager.getLastKnownLocation(provider);
+
+		// Initialize the location fields
+		if (location != null) {
+			System.out.println("Provider " + provider + " has been selected.");
+			onLocationChanged(location);
+		} else {
+		/*	latituteField.setText("Location not available");
+			longitudeField.setText("Location not available");*/
+			onLocationChanged(location);
+
+		}
 
 
 	}
@@ -109,6 +143,14 @@ public class WelcomeActivity extends Activity implements SensorEventListener {
 		super.onResume();
 		// Add the following line to register the Session Manager Listener onResume
 		mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+
+		//   locationManager.requestLocationUpdates(provider, 400, 1, this);
+
+		for (String s : locationManager.getAllProviders()) {
+			locationManager.requestLocationUpdates("gps", 1, 1, WelcomeActivity.this);
+			//locationManager.requestLocationUpdates(provider, 400, 1, WelcomeActivity.this);
+
+		}
 	}
 
 	@Override
@@ -116,6 +158,8 @@ public class WelcomeActivity extends Activity implements SensorEventListener {
 		// Add the following line to unregister the Sensor Manager onPause
 		mSensorManager.unregisterListener(mShakeDetector);
 		super.onPause();
+		locationManager.removeUpdates(this);
+
 	}
 
 	@Override
@@ -209,5 +253,54 @@ public class WelcomeActivity extends Activity implements SensorEventListener {
 			}
 		}
 
+	}
+	@Override
+	public void onLocationChanged(Location location) {
+		int lat = (int) (location.getLatitude());
+		int lng = (int) (location.getLongitude());
+		//int lat = 56;
+		//int lng = 13;
+		
+		latituteField.setText(String.valueOf(lat));
+		longitudeField.setText(String.valueOf(lng));
+
+		String cityName = "Not Found";                 
+		Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());        
+		try 
+		{  
+		//	List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);  
+			List<Address> addresses = gcd.getFromLocation(lat, lng, 1); 
+			if (addresses.size() > 0) 
+			{ 
+				cityName = addresses.get(0).getLocality();  
+				// you should also try with addresses.get(0).toSring();
+				System.out.println(cityName); 
+			}
+		} catch (IOException e) 
+		{                 
+			e.printStackTrace();  
+		} 
+
+		String s = "\n\nMy Currrent City is: "+cityName;
+		city.setText(s);
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		Toast.makeText(this, "Enabled new provider " + provider,
+				Toast.LENGTH_SHORT).show();
+
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		Toast.makeText(this, "Disabled provider " + provider,
+				Toast.LENGTH_SHORT).show();
 	}
 }

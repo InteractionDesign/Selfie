@@ -6,36 +6,39 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="19" />
+        <uses-sdk
+            android:minSdkVersion="10"
+            android:targetSdkVersion="19" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.example.selfi.WelcomeActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <application
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" >
+            <activity
+                android:name="com.example.selfi.WelcomeActivity"
+                android:label="@string/app_name" >
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.selfi.MainActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.example.selfi.DisplayPictureActivity"
-            android:label="@string/title_activity_display_picture"
-            android:parentActivityName="com.example.myfirstapp.WelcomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.myfirstapp.WelcomeActivity" />
-        </activity>
-    </application>
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+            <activity
+                android:name="com.example.selfi.MainActivity"
+                android:label="@string/app_name" />
+            <activity
+                android:name="com.example.selfi.DisplayPictureActivity"
+                android:label="@string/title_activity_display_picture"
+                android:parentActivityName="com.example.myfirstapp.WelcomeActivity" >
+                <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.example.myfirstapp.WelcomeActivity" />
+            </activity>
+        </application>
 
 </manifest>

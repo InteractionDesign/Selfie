@@ -1,21 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/appbackground"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingBottom="50dp"
-     >
+    android:background="@drawable/appbackground"
+    android:paddingBottom="50dp" >
 
-
-    
-    <Button 
-     android:id="@+id/button"
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content"
-     android:text="@string/take_photo"
-     android:layout_alignParentBottom="true"
-     android:layout_centerHorizontal="true"
-     />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/take_photo" />
 
     <Button
         android:id="@+id/button1"
@@ -25,5 +21,50 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="155dp"
         android:text="@string/choose_photo" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button1"
+        android:text="Latitude: "
+        android:textSize="20dip" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TextView01"
+        android:text="unknown"
+        android:textSize="20dip" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/TextView03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Longitute: "
+        android:layout_below="@id/TextView02"
+        android:textSize="20dip" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/TextView04"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TextView03"
+        android:text="unknown"
+        android:textSize="20dip" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/TextView06"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       	android:layout_below="@id/TextView04"
+        android:text="unknown"
+        android:textSize="20dip" >
+    </TextView>
 
 </RelativeLayout>
