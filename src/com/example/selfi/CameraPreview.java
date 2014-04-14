@@ -47,13 +47,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     	int width = windowSize.x;
     	
     	
-    	for (Size size: pictureSizes) {
-    		if (((double) size.width / 4) - ((double) size.height / 3) < 0.0001) {
-    			if(!(size.width < width*0.90)){
-    			return size;
-    			}
-    		}
-    	}
+		for (Size size : pictureSizes) {
+			if (((double) size.width / 4) - ((double) size.height / 3) < 0.0001) {
+				if (!(size.width < width * 0.90)) {
+					return size;
+				}
+			}
+		}
     	return pictureSizes.get(0);
     }
     

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
@@ -81,7 +80,7 @@ public class WelcomeActivity extends Activity {
                 Intent i = new Intent(WelcomeActivity.this, DisplayPictureActivity.class);
                 i.putExtra(EXTRA_MESSAGE, selectedImagePath);
 				startActivity(i);
-            }else if(requestCode == CAMERA_PICTURE){
+            } else if(requestCode == CAMERA_PICTURE) {
             	String photoPath = data.getStringExtra("photoPath");
                 Intent i = new Intent(WelcomeActivity.this, DisplayPictureActivity.class);
                 i.putExtra(EXTRA_MESSAGE, photoPath);
