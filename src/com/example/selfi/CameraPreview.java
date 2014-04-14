@@ -95,6 +95,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // reformatting changes here
         Parameters parameters = mCamera.getParameters();
         parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
+        parameters.setColorEffect(Parameters.EFFECT_AQUA);
 
         mCamera.setParameters(parameters);
         // here 1 stands for front camera
