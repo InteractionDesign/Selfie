@@ -1,14 +1,19 @@
 package com.example.selfi;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
@@ -34,17 +39,25 @@ public class PictureSaver implements PictureCallback {
             return;
         }
         mCurrentPhotoPath = pictureFile.getAbsolutePath();
-        galleryAddPic();
+        
+        
+        Bitmap original = BitmapFactory.decodeByteArray(data , 0, data .length);
+        Bitmap rotated = rotateBitmap(original);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        rotated.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
 
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            fos.write(data);
+            fos.write(byteArray);
             fos.close();
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found: " + e.getMessage());
         } catch (IOException e) {
             Log.d(TAG, "Error accessing file: " + e.getMessage());
         } 
+        
+        galleryAddPic();
 
         // send the path back to "welcome" activity
         Intent resultIntent = new Intent();
@@ -90,5 +103,18 @@ public class PictureSaver implements PictureCallback {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         parent.sendBroadcast(mediaScanIntent);
+    }
+    
+    // this code might be hardware-dependent, we should check that
+    private Bitmap rotateBitmap(Bitmap original) {
+        Matrix matrix = new Matrix();
+        matrix.setScale(-1,1);
+        matrix.postTranslate(original.getWidth(),0);
+        matrix.postRotate(90);
+        
+        Bitmap rotated = Bitmap.createBitmap(original, 0, 0, 
+                                      original.getWidth(), original.getHeight(), 
+                                      matrix, true);
+        return rotated;
     }
 }

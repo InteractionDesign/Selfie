@@ -118,7 +118,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         int rotation = activity.getWindowManager().getDefaultDisplay()
                 .getRotation();
         int degrees = 0;
-        switch (rotation) {
+        switch (rotation) {            
         case Surface.ROTATION_0:
             degrees = 0;
             break;
