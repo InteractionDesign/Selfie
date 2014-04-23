@@ -9,6 +9,8 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -138,6 +140,17 @@ public class MainActivity extends Activity {
 						toast.cancel(); 
 					}
 				}, 999);
+				
+				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.beep2);
+                mp.setOnCompletionListener(new OnCompletionListener() {
+
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.release();
+                    }
+
+                });   
+                mp.start();
 			}
 
 			public void onFinish() {
