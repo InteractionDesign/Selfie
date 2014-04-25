@@ -42,6 +42,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.myfirstapp.WelcomeActivity" />
         </activity>
+        <activity android:label="@string/welcome" android:name="SplashScreen" android:parentActivityName="@string/app_name"></activity>
     </application>
 
 </manifest>

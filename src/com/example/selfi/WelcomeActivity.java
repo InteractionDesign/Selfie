@@ -18,6 +18,7 @@ public class WelcomeActivity extends Activity {
     private static final int SELECT_PICTURE = 1;
     private static final int CAMERA_PICTURE = 2;
     public static final String EXTRA_MESSAGE = "com.example.selfi";
+	private static final int SPLASH_SCREEN = 3;
 
 
     @Override
@@ -50,6 +51,11 @@ public class WelcomeActivity extends Activity {
                         "Select Picture"), SELECT_PICTURE);
             }
         });
+        
+        
+        
+        Intent i = new Intent(WelcomeActivity.this, SplashScreen.class);
+		startActivityForResult(i, SPLASH_SCREEN);
     }
     
  
@@ -86,6 +92,10 @@ public class WelcomeActivity extends Activity {
                 i.putExtra(EXTRA_MESSAGE, photoPath);
     			startActivity(i);
                 
+            }else if(requestCode == SPLASH_SCREEN){
+            	Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
+            	startActivityForResult(i, CAMERA_PICTURE);
+            	
             }
         }
     }
