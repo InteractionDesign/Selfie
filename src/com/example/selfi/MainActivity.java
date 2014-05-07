@@ -158,6 +158,16 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, 
 						"done!", 
 						Toast.LENGTH_SHORT).show();
+				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.shutter);
+                mp.setOnCompletionListener(new OnCompletionListener() {
+
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.release();
+                    }
+
+                });   
+                mp.start();
 				mCamera.takePicture(null, null, new PictureSaver(MainActivity.this));
 				alreadyShook = false;
 			}
