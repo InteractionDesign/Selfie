@@ -1,13 +1,18 @@
 package com.example.selfi;
 
 
+import java.util.List;
+
 import com.example.selfi.ShakeDetector.OnShakeListener;
 
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.hardware.Camera.Parameters;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -15,27 +20,31 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import 	android.os.CountDownTimer;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SensorEventListener{
 
-	private Camera mCamera;
+	public Camera mCamera;
 	private CameraPreview mPreview;
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private ShakeDetector mShakeDetector;
 	private static boolean alreadyShook = false;
-	FrameLayout preview;
-	DrawStuff dw;
+	private SensorManager sensorManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
+		// add listener. The listener will be HelloAndroid (this) class
+		sensorManager.registerListener(this, 
+				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_NORMAL);
 		// hide the title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -45,12 +54,11 @@ public class MainActivity extends Activity {
 		getCameraInstance();
 		// Create our Preview view and set it as the content of our activity.
 		mPreview = new CameraPreview(this, mCamera);
-		preview = (FrameLayout) findViewById(R.id.camera_preview);
+		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
-		dw = new DrawStuff(this.getApplicationContext());
-		preview.addView(dw);
-		
-		
+		preview.addView(new DrawStuff(this.getApplicationContext()));
+
+
 
 		//        Button captureButton = (Button) findViewById(R.id.button_capture);
 		//        captureButton.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +70,7 @@ public class MainActivity extends Activity {
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		mShakeDetector = new ShakeDetector();
+		//mCamera.startPreview();
 
 		mShakeDetector.setOnShakeListener(new OnShakeListener() {
 			@Override public void onShake(int count) {
@@ -73,8 +82,8 @@ public class MainActivity extends Activity {
 
 			}
 		});   
-		
-		
+
+
 	}
 
 	@Override
@@ -88,17 +97,17 @@ public class MainActivity extends Activity {
 
 	private void getCameraInstance(){
 		if (mCamera == null) {
-			
+
 			//
 			int defaultCameraId = 0;
 			CameraInfo cameraInfo = new CameraInfo();
 			for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-			    Camera.getCameraInfo(i, cameraInfo);
-			    if (cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT) {
-			        defaultCameraId = i;
-			    }
+				Camera.getCameraInfo(i, cameraInfo);
+				if (cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT) {
+					defaultCameraId = i;
+				}
 			}
-			
+
 			try {
 				mCamera = Camera.open(defaultCameraId); 
 			}
@@ -110,8 +119,14 @@ public class MainActivity extends Activity {
 
 	private void releaseCamera(){
 		if (mCamera != null){
-			mCamera.release();
-			mCamera = null;
+
+			try{
+				mCamera.stopPreview();
+				mCamera.release();
+				mCamera = null;
+			}catch(Exception e){
+				Log.d("CameraActivity", "Kan inte stoppa kameran! " + e.getMessage());
+			}
 		}
 	}
 
@@ -131,8 +146,6 @@ public class MainActivity extends Activity {
 	}
 
 	public void startCountdown() {
-		dw.actionStarted(true);
-		preview.postInvalidate();
 		new CountDownTimer(2005, 1000) {
 			public void onTick(long millisUntilFinished) {
 				final Toast toast = Toast.makeText(MainActivity.this, 
@@ -146,38 +159,62 @@ public class MainActivity extends Activity {
 						toast.cancel(); 
 					}
 				}, 999);
-				
+
 				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.beep2);
-                mp.setOnCompletionListener(new OnCompletionListener() {
+				mp.setOnCompletionListener(new OnCompletionListener() {
 
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        mp.release();
-                    }
+					@Override
+					public void onCompletion(MediaPlayer mp) {
+						mp.release();
+					}
 
-                });   
-                mp.start();
+				});   
+				mp.start();
 			}
 
 			public void onFinish() {
 				Toast.makeText(MainActivity.this, 
 						"done!", 
 						Toast.LENGTH_SHORT).show();
-				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.shutter);
-                mp.setOnCompletionListener(new OnCompletionListener() {
-
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        mp.release();
-                    }
-
-                });   
-                mp.start();
 				mCamera.takePicture(null, null, new PictureSaver(MainActivity.this));
 				alreadyShook = false;
+				//mCamera.stopPreview();
 			}
 		}.start();  
 	}
-	
-	
+	//	@Override
+	//	protected void onStop() {
+	//		super.onStop();
+	//		 if (mCamera != null) {
+	//		        // Call stopPreview() to stop updating the preview surface.
+	//		    	mCamera.stopPreview();
+	//		        mCamera.release();
+	//		        mCamera = null;
+	//		    }
+	//	}
+
+
+	public Camera getCamera(){
+		return mCamera;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		if(mCamera != null){
+		if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
+			float z = event.values[2];
+			if(z<0){
+				mPreview.changeFilter();
+			}		
+		}
+		}
+	}
+
+
 }
