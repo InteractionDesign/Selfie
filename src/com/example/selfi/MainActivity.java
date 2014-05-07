@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
 		mPreview = new CameraPreview(this, mCamera);
 		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
+		preview.addView(new DrawStuff(this.getApplicationContext()));
 		
 		
 
