@@ -29,6 +29,8 @@ public class MainActivity extends Activity {
 	private Sensor mAccelerometer;
 	private ShakeDetector mShakeDetector;
 	private static boolean alreadyShook = false;
+	FrameLayout preview;
+	DrawStuff dw;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,10 @@ public class MainActivity extends Activity {
 		getCameraInstance();
 		// Create our Preview view and set it as the content of our activity.
 		mPreview = new CameraPreview(this, mCamera);
-		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+		preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
-		preview.addView(new DrawStuff(this.getApplicationContext()));
+		dw = new DrawStuff(this.getApplicationContext());
+		preview.addView(dw);
 		
 		
 
@@ -128,6 +131,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void startCountdown() {
+		dw.actionStarted(true);
+		preview.postInvalidate();
 		new CountDownTimer(2005, 1000) {
 			public void onTick(long millisUntilFinished) {
 				final Toast toast = Toast.makeText(MainActivity.this, 

@@ -13,6 +13,7 @@ public class DrawStuff extends View {
 	private Bitmap shakecamera;
 	private double width;
 	private double height;
+	private boolean action;
 
 	public DrawStuff(Context context) {
 		super(context);
@@ -23,12 +24,20 @@ public class DrawStuff extends View {
 		display.getSize(size);
 		width = size.x;
 		height = size.y;
+		action = false;
+	}
+	public void actionStarted(boolean bol){
+		if(bol){
+			action = true;
+		}
 	}
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);	
 		double new_height = height - 0.2*height;
+		if (!action){
 		canvas.drawBitmap(shakecamera, (float) width/4, (float) new_height, null);
+		}
 	}	
 
 }
