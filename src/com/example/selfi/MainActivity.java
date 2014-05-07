@@ -38,6 +38,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 	private SensorManager sensorManager;
 	private MediaPlayer mp;
 	private boolean facingDown;
+	private FrameLayout preview;
+	private DrawStuff dw;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +58,10 @@ public class MainActivity extends Activity implements SensorEventListener{
 		getCameraInstance();
 		// Create our Preview view and set it as the content of our activity.
 		mPreview = new CameraPreview(this, mCamera);
-		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+		preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
-		preview.addView(new DrawStuff(this.getApplicationContext()));
+		dw = new DrawStuff(this.getApplicationContext());
+		preview.addView(dw);
 		facingDown = false;
 
 
@@ -149,6 +152,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 	}
 
 	public void startCountdown() {
+		dw.actionStarted(true);
+		preview.postInvalidate();
 		new CountDownTimer(2005, 1000) {
 			public void onTick(long millisUntilFinished) {
 				final Toast toast = Toast.makeText(MainActivity.this, 
@@ -222,7 +227,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		if(mCamera != null){
 		if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
 			float z = event.values[2];
-			if(z<-2 && !facingDown){
+			if(z<-3 && !facingDown){
 				mPreview.changeFilter();
 				facingDown = true;
 			}if(z>=0){
