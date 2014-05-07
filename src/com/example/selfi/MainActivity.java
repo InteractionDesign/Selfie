@@ -215,6 +215,10 @@ public class MainActivity extends Activity implements SensorEventListener{
 		}
 		}
 	}
+	@Override
+	public void onBackPressed() {
+	   
+	}
 
 
 }

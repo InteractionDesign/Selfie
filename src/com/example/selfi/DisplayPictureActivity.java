@@ -124,4 +124,8 @@ public class DisplayPictureActivity extends Activity {
 		mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
 	}
+	@Override
+	public void onBackPressed() {
+	   
+	}
 }

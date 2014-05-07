@@ -122,5 +122,9 @@ public class WelcomeActivity extends Activity {
             // this is our fallback here
             return uri.getPath();
     }
+    @Override
+	public void onBackPressed() {
+	   
+	}
     
 }
