@@ -37,6 +37,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	private static boolean alreadyShook = false;
 	private SensorManager sensorManager;
 	private MediaPlayer mp;
+	private boolean facingDown;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
 		preview.addView(new DrawStuff(this.getApplicationContext()));
+		facingDown = false;
 
 
 
@@ -220,9 +222,12 @@ public class MainActivity extends Activity implements SensorEventListener{
 		if(mCamera != null){
 		if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
 			float z = event.values[2];
-			if(z<-2){
+			if(z<-2 && !facingDown){
 				mPreview.changeFilter();
-			}		
+				facingDown = true;
+			}if(z>=0){
+				facingDown = false;
+			}
 		}
 		}
 	}
