@@ -36,6 +36,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	private ShakeDetector mShakeDetector;
 	private static boolean alreadyShook = false;
 	private SensorManager sensorManager;
+	private MediaPlayer mp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +161,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 					}
 				}, 999);
 
-				MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.beep2);
+				mp = MediaPlayer.create(MainActivity.this, R.raw.beep2);
 				mp.setOnCompletionListener(new OnCompletionListener() {
 
 					@Override
@@ -178,6 +179,16 @@ public class MainActivity extends Activity implements SensorEventListener{
 						Toast.LENGTH_SHORT).show();
 				mCamera.takePicture(null, null, new PictureSaver(MainActivity.this));
 				alreadyShook = false;
+				mp = MediaPlayer.create(MainActivity.this, R.raw.shutter);
+				mp.setOnCompletionListener(new OnCompletionListener() {
+
+					@Override
+					public void onCompletion(MediaPlayer mp) {
+						mp.release();
+					}
+
+				});   
+				mp.start();
 				//mCamera.stopPreview();
 			}
 		}.start();  
