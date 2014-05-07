@@ -220,7 +220,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		if(mCamera != null){
 		if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
 			float z = event.values[2];
-			if(z<0){
+			if(z<-2){
 				mPreview.changeFilter();
 			}		
 		}

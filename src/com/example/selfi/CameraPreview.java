@@ -25,11 +25,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	private Camera mCamera;
 	private Activity caller;
 	private Size mPictureSize; // width = 1600, height = 1200 works
+	private int currentEffect;
 
 	public CameraPreview(Activity caller, Camera camera) {
 		super(caller);
 		this.caller = caller;
 		mCamera = camera;
+		currentEffect = 0;
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
@@ -121,9 +123,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		Parameters parameters = mCamera.getParameters();
 		parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
 		List<String> effectList = parameters.getSupportedColorEffects();
-		parameters.setColorEffect(effectList.get(1));
+		if(currentEffect == effectList.size()){
+			currentEffect = 0;
+		}
+		parameters.setColorEffect(effectList.get(currentEffect));
 
 		mCamera.setParameters(parameters);
+		
+		currentEffect += 1;
 		
 //		setCameraDisplayOrientation(this.caller, 1);
 //		// start preview with new settings
