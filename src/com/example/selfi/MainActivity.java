@@ -128,7 +128,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void startCountdown() {
-		new CountDownTimer(5005, 1000) {
+		new CountDownTimer(2005, 1000) {
 			public void onTick(long millisUntilFinished) {
 				final Toast toast = Toast.makeText(MainActivity.this, 
 						"seconds remaining: " + millisUntilFinished / 1000, 
