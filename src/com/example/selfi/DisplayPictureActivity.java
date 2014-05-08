@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.app.Activity;
 
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ImageView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -32,9 +33,10 @@ public class DisplayPictureActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_display_picture);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		//setupActionBar();
 
 		Intent intent = getIntent();
 		String imagePath = intent.getStringExtra(WelcomeActivity.EXTRA_MESSAGE);
