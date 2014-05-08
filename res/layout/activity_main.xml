@@ -2,8 +2,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
     android:baselineAligned="false"
+    android:background="@drawable/appbackground"
     >
   <FrameLayout
     android:id="@+id/camera_preview"

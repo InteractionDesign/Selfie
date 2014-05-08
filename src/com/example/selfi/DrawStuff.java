@@ -57,7 +57,7 @@ public DrawStuff(Context context, int i) {
         
         if (!action) {
             canvas.drawBitmap(shakecamera, (float) ((width - bitmapWidth) / 2),
-                    (float) (height - (bitmapHeight * 1.2 ) ), null);
+                    (float) (height - (bitmapHeight * 1.5 ) ), null);
         }
         if(activity == 1){
         	if(!action){
