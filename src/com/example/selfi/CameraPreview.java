@@ -124,30 +124,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
 		List<String> effectList = parameters.getSupportedColorEffects();
 		
-		if (effectList == null) {
-		    // prevent the app from crashing on the phones that do not support colours
-		    return;
-		}
-		
-		if(currentEffect == effectList.size()){
-			currentEffect = 0;
-		}
-		parameters.setColorEffect(effectList.get(currentEffect));
+		// prevent the app from crashing on the phones that do not support colours
+		if (effectList != null) {
+		    
+    		if(currentEffect == effectList.size()){
+    			currentEffect = 0;
+    		}
+    		parameters.setColorEffect(effectList.get(currentEffect));
+    		currentEffect += 1;
+		} 
 
 		mCamera.setParameters(parameters);
-		
-		currentEffect += 1;
-		
-//		setCameraDisplayOrientation(this.caller, 1);
-//		// start preview with new settings
-//		try {
-//			mCamera.setPreviewDisplay(mHolder);
-//			mCamera.startPreview();
-//
-//		} catch (Exception e) {
-//			Log.d("dimochka",
-//					"Error starting camera preview: " + e.getMessage());
-//		}
 	}
 
 	public void setCameraDisplayOrientation(Activity activity, int cameraId) {
