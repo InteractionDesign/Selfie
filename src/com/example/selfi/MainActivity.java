@@ -245,15 +245,15 @@ public class MainActivity extends Activity implements SensorEventListener{
  
 			
 			if(gForce < SHAKE_THRESHOLD_GRAVITY){
-			if(x > 2 && z < -1 && !facingDown){
+			if(x > 7 && y < 2 && !facingDown){
 				mPreview.changeFilter("left");
 				facingDown = true;
 				
-			}else if(x < -2 && z < -1 && !facingDown){
+			}else if(x < -7 && y < 2 && !facingDown){
 				mPreview.changeFilter("right");
 				facingDown = true;
 				
-			}if(x <= 2 && z >= 0){
+			}if(x <= 2 && x >= -2 && y >= 5){
 			
 				facingDown = false;
 			}
