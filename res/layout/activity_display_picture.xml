@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".DisplayPictureActivity" >
+    tools:context=".DisplayPictureActivity" 
+    android:background="@drawable/appbackground" >
 
     <ImageView
         android:id="@+id/imageviewid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/choose_photo"
-        android:src="@drawable/appbackground" />
+        android:contentDescription="@string/choose_photo" />
     
 </FrameLayout> 

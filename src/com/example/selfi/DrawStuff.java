@@ -46,7 +46,7 @@ public DrawStuff(Context context, int i) {
     super.onDraw(canvas);
     double new_height;
     if(activity == 1){
-    	new_height = height - 0.2*height;
+    	new_height = height - 0.18*height;
     }else{
     	new_height = height - 0.18*height;
     }
