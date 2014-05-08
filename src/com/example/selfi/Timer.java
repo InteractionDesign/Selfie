@@ -1,6 +1,4 @@
 package com.example.selfi;
-
-import android.app.Activity;
 import android.util.Log;
 
 public class Timer extends Thread {

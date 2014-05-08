@@ -3,8 +3,6 @@ package com.example.selfi;
 import java.io.File;
 
 import com.example.selfi.ShakeDetector.OnShakeListener;
-
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 
