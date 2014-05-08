@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		mPreview = new CameraPreview(this, mCamera);
 		preview = (FrameLayout) findViewById(R.id.camera_preview);
 		preview.addView(mPreview);
-		dw = new DrawStuff(this.getApplicationContext());
+		dw = new DrawStuff(this.getApplicationContext(), 1);
 		preview.addView(dw);
 		facingDown = false;
 

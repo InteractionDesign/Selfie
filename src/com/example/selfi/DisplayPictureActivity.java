@@ -8,6 +8,7 @@ import android.app.Activity;
 
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -65,6 +66,9 @@ public class DisplayPictureActivity extends Activity {
 
 			}
 		});
+		FrameLayout canvas = (FrameLayout) findViewById(R.id.display_picture);
+		DrawStuff dw = new DrawStuff(this.getApplicationContext(), 2);
+		canvas.addView(dw);
 
 	}
 
