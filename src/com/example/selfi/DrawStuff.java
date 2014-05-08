@@ -62,7 +62,7 @@ public DrawStuff(Context context, int i) {
         if(activity == 1){
         	if(!action){
         		canvas.drawBitmap(tilt_left, (float) ((float) width-width+0.05*width), (float) height/2, null);
-        		canvas.drawBitmap(tilt_right, (float) ((float) width-0.35*width), (float) height/2, null);
+        		canvas.drawBitmap(tilt_right, (float) ((float) width-0.3*width), (float) height/2, null);
         	}
         }
     }
