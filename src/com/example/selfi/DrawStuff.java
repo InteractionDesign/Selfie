@@ -54,6 +54,7 @@ public DrawStuff(Context context, int i) {
 
         int bitmapWidth =  shakecamera.getWidth();
         int bitmapHeight = shakecamera.getHeight();
+        
         if (!action) {
             canvas.drawBitmap(shakecamera, (float) ((width - bitmapWidth) / 2),
                     (float) (height - (bitmapHeight * 1.2 ) ), null);
