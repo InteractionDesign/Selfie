@@ -16,6 +16,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
@@ -26,6 +27,7 @@ import 	android.os.CountDownTimer;
 
 public class MainActivity extends Activity implements SensorEventListener{
 
+	private static final float SHAKE_THRESHOLD_GRAVITY = 2.3F;
 	public Camera mCamera;
 	private CameraPreview mPreview;
 	private SensorManager mSensorManager;
@@ -223,11 +225,24 @@ public class MainActivity extends Activity implements SensorEventListener{
 	public void onSensorChanged(SensorEvent event) {
 		if(mCamera != null){
 		if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
+			float x = event.values[0];
+			float y = event.values[1];
 			float z = event.values[2];
-			if(z<-3 && !facingDown){
+			
+			
+			float gX = x / SensorManager.GRAVITY_EARTH;
+            float gY = y / SensorManager.GRAVITY_EARTH;
+            float gZ = z / SensorManager.GRAVITY_EARTH;
+ 
+            // gForce will be close to 1 when there is no movement.
+            float gForce = FloatMath.sqrt(gX * gX + gY * gY + gZ * gZ);
+ 
+			
+			
+			if(x > 2 && z < -1 && !facingDown && gForce < SHAKE_THRESHOLD_GRAVITY){
 				mPreview.changeFilter();
 				facingDown = true;
-			}if(z>=0){
+			}if(x <= 2 && z >= 0){
 				facingDown = false;
 			}
 		}
