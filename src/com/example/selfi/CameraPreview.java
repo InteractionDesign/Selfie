@@ -69,6 +69,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		try {
 			mCamera.setPreviewDisplay(holder);
 			mCamera.startPreview();
+			changeFilter("first");
 		} catch (IOException e) {
 			Log.d("dimochka", "Error setting camera preview: " + e.getMessage());
 		}
@@ -116,7 +117,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 
-	public void changeFilter(){
+	public void changeFilter(String direction){
 		Parameters parameters = mCamera.getParameters();
 		parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
 		List<String> effectList = parameters.getSupportedColorEffects();
@@ -124,11 +125,22 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		// prevent the app from crashing on the phones that do not support colours
 		if (effectList != null) {
 		    
-    		if(currentEffect == effectList.size()){
+    		
+    		if(direction.equalsIgnoreCase("right")){
+    			currentEffect += 1;
+    			if(currentEffect == effectList.size()){
+    				currentEffect = 0;
+    			}
+    		}else if(direction.equalsIgnoreCase("left")){
+    			currentEffect -= 1;
+    			if(currentEffect == -1){
+    				currentEffect = effectList.size() -1;
+    			}
+    		}else{
     			currentEffect = 0;
     		}
     		parameters.setColorEffect(effectList.get(currentEffect));
-    		currentEffect += 1;
+    		
 		} 
 
 		mCamera.setParameters(parameters);
