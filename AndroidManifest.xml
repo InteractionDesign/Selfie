@@ -6,7 +6,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -36,13 +36,18 @@
         <activity
             android:name="com.example.selfi.DisplayPictureActivity"
             android:label="@string/title_activity_display_picture"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.example.myfirstapp.WelcomeActivity" >
+            android:parentActivityName="com.example.myfirstapp.WelcomeActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.myfirstapp.WelcomeActivity" />
         </activity>
-        <activity android:label="@string/welcome" android:name="com.example.selfi.SplashScreen" android:parentActivityName="@string/app_name"></activity>
+        <activity
+            android:name="com.example.selfi.SplashScreen"
+            android:label="@string/welcome"
+            android:parentActivityName="@string/app_name"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
