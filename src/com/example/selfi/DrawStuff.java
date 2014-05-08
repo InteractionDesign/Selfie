@@ -13,57 +13,56 @@ import android.view.WindowManager;
 @SuppressLint("ViewConstructor")
 public class DrawStuff extends View {
     private Bitmap shakecamera;
+    private Bitmap tilt_right;
+    private Bitmap tilt_left;
     private double width;
     private double height;
     private boolean action;
     private int activity;
+    
 
-    @SuppressLint("NewApi")
-    public DrawStuff(Context context, int i) {
-        super(context);
-        activity = i;
-        if (activity == 1) {
-            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera);
-        } else if (activity == 2) {
-            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera_black);
-        } else {
-            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera);
-        }
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        width = size.x;
-        height = size.y;
-        action = false;
+  @SuppressLint("NewApi")
+public DrawStuff(Context context, int i) {
+    super(context);
+    activity = i;
+    if(activity == 1){
+    shakecamera = BitmapFactory.decodeResource(getResources(),R.drawable.shakecamera);
+    tilt_left = BitmapFactory.decodeResource(getResources(),R.drawable.tilt_left);
+    tilt_right = BitmapFactory.decodeResource(getResources(),R.drawable.tilt_right);
+    }else if(activity == 2){
+    shakecamera = BitmapFactory.decodeResource(getResources(),R.drawable.shakecamera_black);
+    }else{
+    shakecamera = BitmapFactory.decodeResource(getResources(),R.drawable.shakecamera);
     }
-
-
-    public void actionStarted(boolean bol) {
-        if (bol) {
-            action = true;
-        }
-
+    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    Display display = wm.getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    width = size.x;
+    height = size.y;
+    action = false;
+  }
+  public void actionStarted(boolean bol){
+    if(bol){
+      action = true;
     }
+  }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        double new_height;
-//        if (activity == 1) {
-//            new_height = height - 0.2 * height;
-//        } else {
-//            new_height = height - 0.18 * height;
-//        }
-//        if (!action) {
-//            canvas.drawBitmap(shakecamera, (float) width / 4,
-//                    (float) new_height, null);
-//        }
+
         int bitmapWidth =  shakecamera.getWidth();
         int bitmapHeight = shakecamera.getHeight();
         if (!action) {
             canvas.drawBitmap(shakecamera, (float) ((width - bitmapWidth) / 2),
-                    (float) (height - (bitmapHeight * 1.5 ) ), null);
+                    (float) (height - (bitmapHeight * 1.2 ) ), null);
+        }
+        if(activity == 1){
+        	if(!action){
+        		canvas.drawBitmap(tilt_left, (float) ((float) width-width+0.05*width), (float) height/2, null);
+        		canvas.drawBitmap(tilt_right, (float) ((float) width-0.35*width), (float) height/2, null);
+        	}
         }
     }
  

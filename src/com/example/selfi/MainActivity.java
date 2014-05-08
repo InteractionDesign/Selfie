@@ -27,7 +27,7 @@ import 	android.os.CountDownTimer;
 
 public class MainActivity extends Activity implements SensorEventListener{
 
-	private static final float SHAKE_THRESHOLD_GRAVITY = 2.3F;
+	private static final float SHAKE_THRESHOLD_GRAVITY = 1.5F;
 	public Camera mCamera;
 	private CameraPreview mPreview;
 	private SensorManager mSensorManager;
