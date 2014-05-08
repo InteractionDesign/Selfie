@@ -115,6 +115,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 
 			try {
 				mCamera = Camera.open(defaultCameraId); 
+				if (mPreview != null) {
+				    mPreview.setCamera(mCamera);
+				}
 			}
 			catch (Exception e){
 				Log.d("CameraActivity", "Error when getting a camera instance: " + e.getMessage());
@@ -129,6 +132,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 				mCamera.stopPreview();
 				mCamera.release();
 				mCamera = null;
+				if (mPreview != null) {
+                    mPreview.setCamera(mCamera);
+                }
 			}catch(Exception e){
 				Log.d("CameraActivity", "Kan inte stoppa kameran! " + e.getMessage());
 			}
