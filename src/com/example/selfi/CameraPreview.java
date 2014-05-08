@@ -123,6 +123,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		Parameters parameters = mCamera.getParameters();
 		parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
 		List<String> effectList = parameters.getSupportedColorEffects();
+		
+		if (effectList == null) {
+		    // prevent the app from crashing on the phones that do not support colours
+		    return;
+		}
+		
 		if(currentEffect == effectList.size()){
 			currentEffect = 0;
 		}

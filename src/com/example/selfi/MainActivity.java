@@ -1,7 +1,6 @@
 package com.example.selfi;
 
 
-import java.util.List;
 
 import com.example.selfi.ShakeDetector.OnShakeListener;
 
@@ -9,7 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
-import android.hardware.Camera.Parameters;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.SurfaceHolder;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
