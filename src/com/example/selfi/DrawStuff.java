@@ -61,7 +61,7 @@ public DrawStuff(Context context, int i) {
         }
         if(activity == 1){
         	if(!action){
-        		float height_tilt = (float) (height - (bitmapHeight * 1.6 )); //height/2
+        		float height_tilt = (float) (height - (bitmapHeight * 1.5 )); //height/2
         		canvas.drawBitmap(tilt_left, (float) ((float) 0.05*width), height_tilt, null);
         		canvas.drawBitmap(tilt_right, (float) ((float) 0.95*width - tilt_right.getWidth()), height_tilt, null);
         	}
