@@ -16,7 +16,7 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-@SuppressLint("ViewConstructor")
+@SuppressLint({ "ViewConstructor", "NewApi" })
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 	private SurfaceHolder mHolder;
 	private Camera mCamera;
@@ -38,8 +38,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		List<Size> picSizes = mCamera.getParameters().getSupportedPictureSizes();
 		mPictureSize = getOptimalPictureSize(picSizes);
 	}
-
-	@SuppressLint("NewApi")
+	
 	private Size getOptimalPictureSize(List<Size> pictureSizes) {
 		// we assume they are ordered from highest to lowest
 		// we want to find one with 4/3 aspect ratio
@@ -57,11 +56,37 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 		return pictureSizes.get(0);
 	}
+	
+	private Camera.Size getBestPreviewSize()
+	{
+        Display display = caller.getWindowManager().getDefaultDisplay();
+        Point windowSize = new Point();
+        display.getSize(windowSize);
+        int width = windowSize.x;
+        int height = windowSize.y;
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(mPictureSize.height, mPictureSize.width);
+        Camera.Size result = null;
+        Camera.Parameters p = mCamera.getParameters();
+        for (Camera.Size size : p.getSupportedPreviewSizes()) {
+            if ((size.width <= width && size.height <= height)
+                    || (size.height <= width && size.width <= height)) {
+                if (result == null) {
+                    result = size;
+                } else {
+                    int resultArea = result.width * result.height;
+                    int newArea = size.width * size.height;
+
+                    if (newArea > resultArea) {
+                        result = size;
+                    }
+                }
+            }
+        }
+        return result;
+
 	}
+
+
 
 	public void surfaceCreated(SurfaceHolder holder) {
 	    if (mCamera == null) {
@@ -103,12 +128,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 		// set preview size and make any resize, rotate or
 		// reformatting changes here
-		/*    Parameters parameters = mCamera.getParameters();
-        parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
-        List<String> effectList = parameters.getSupportedColorEffects();
-        parameters.setColorEffect(effectList.get(1));
+		Parameters parameters = mCamera.getParameters();
+		mPictureSize = getBestPreviewSize();
+        //parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
+        parameters.setPreviewSize(mPictureSize.width, mPictureSize.height);
 
-        mCamera.setParameters(parameters);*/
+        mCamera.setParameters(parameters);
 		// here 1 stands for front camera
 		setCameraDisplayOrientation(this.caller, 1);
 		// start preview with new settings
@@ -124,7 +149,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 	public void changeFilter(String direction){
 		Parameters parameters = mCamera.getParameters();
-		parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
+		//parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
 		List<String> effectList = parameters.getSupportedColorEffects();
 		
 		// prevent the app from crashing on the phones that do not support colours

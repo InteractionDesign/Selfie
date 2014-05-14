@@ -29,12 +29,11 @@ public final class R {
         public static final int tilt_right=0x7f020005;
     }
     public static final class id {
-        public static final int action_settings=0x7f090005;
-        public static final int button=0x7f090003;
-        public static final int button1=0x7f090004;
-        public static final int camera_preview=0x7f090002;
+        public static final int action_settings=0x7f090004;
+        public static final int button=0x7f090002;
+        public static final int button1=0x7f090003;
+        public static final int camera_preview=0x7f090001;
         public static final int display_picture=0x7f090000;
-        public static final int imageviewid=0x7f090001;
     }
     public static final class layout {
         public static final int activity_display_picture=0x7f030000;

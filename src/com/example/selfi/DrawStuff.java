@@ -19,54 +19,55 @@ public class DrawStuff extends View {
     private double height;
     private boolean action;
     private int activity;
-    
 
-  @SuppressLint("NewApi")
-public DrawStuff(Context context, int i) {
-    super(context);
-    activity = i;
-    if(activity == 1){
-    shakecamera = BitmapFactory.decodeResource(getResources(),R.drawable.shakecamera);
-    tilt_left = BitmapFactory.decodeResource(getResources(),R.drawable.tilt_left);
-    tilt_right = BitmapFactory.decodeResource(getResources(),R.drawable.tilt_right);
-    }else if(activity == 2){
-    shakecamera = BitmapFactory.decodeResource(getResources(),R.drawable.shakecamera_black);
-    }else{
-    shakecamera = BitmapFactory.decodeResource(getResources(),R.drawable.shakecamera);
+    @SuppressLint("NewApi")
+    public DrawStuff(Context context, int i) {
+        super(context);
+        activity = i;
+        if (activity == 1) {
+            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera);
+            tilt_left = BitmapFactory.decodeResource(getResources(), R.drawable.tilt_left);
+            tilt_right = BitmapFactory.decodeResource(getResources(), R.drawable.tilt_right);
+        } else {
+            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera);
+        }
+        
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+        action = false;
     }
-    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-    Display display = wm.getDefaultDisplay();
-    Point size = new Point();
-    display.getSize(size);
-    width = size.x;
-    height = size.y;
-    action = false;
-  }
-  public void actionStarted(boolean bol){
-    if(bol){
-      action = true;
+
+    public void actionStarted(boolean bol) {
+        if (bol) {
+            action = true;
+        }
     }
-  }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int bitmapWidth =  shakecamera.getWidth();
+        int bitmapWidth = shakecamera.getWidth();
         int bitmapHeight = shakecamera.getHeight();
-        
+
         if (!action) {
             canvas.drawBitmap(shakecamera, (float) ((width - bitmapWidth) / 2),
-                    (float) (height - (bitmapHeight * 1.5 ) ), null);
+                    (float) (height - (bitmapHeight * 1.5)), null);
         }
-        if(activity == 1){
-        	if(!action){
-        		float height_tilt = (float) (height - (bitmapHeight * 1.5 )); //height/2
-        		canvas.drawBitmap(tilt_left, (float) ((float) 0.05*width), height_tilt, null);
-        		canvas.drawBitmap(tilt_right, (float) ((float) 0.95*width - tilt_right.getWidth()), height_tilt, null);
-        	}
+        if (activity == 1) {
+            if (!action) {
+                float height_tilt = (float) (height - (bitmapHeight * 1.5)); // height/2
+                canvas.drawBitmap(tilt_left, (float) ((float) 0.05 * width),
+                        height_tilt, null);
+                canvas.drawBitmap(tilt_right,
+                        (float) ((float) 0.95 * width - tilt_right.getWidth()),
+                        height_tilt, null);
+            }
         }
     }
- 
 
 }
