@@ -25,11 +25,11 @@ public class DrawStuff extends View {
         super(context);
         activity = i;
         if (activity == 1) {
-            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera);
-            tilt_left = BitmapFactory.decodeResource(getResources(), R.drawable.tilt_left);
-            tilt_right = BitmapFactory.decodeResource(getResources(), R.drawable.tilt_right);
+            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera_galaxys4);
+            tilt_left = BitmapFactory.decodeResource(getResources(), R.drawable.tilt_left_galaxys4);
+            tilt_right = BitmapFactory.decodeResource(getResources(), R.drawable.tilt_right_galaxys4);
         } else {
-            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera);
+            shakecamera = BitmapFactory.decodeResource(getResources(), R.drawable.shakecamera_black_galaxys4);
         }
         
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -56,15 +56,15 @@ public class DrawStuff extends View {
 
         if (!action) {
             canvas.drawBitmap(shakecamera, (float) ((width - bitmapWidth) / 2),
-                    (float) (height - (bitmapHeight * 1.5)), null);
+                    (float) (height - (bitmapHeight * 1.3)), null);
         }
         if (activity == 1) {
             if (!action) {
-                float height_tilt = (float) (height - (bitmapHeight * 1.5)); // height/2
-                canvas.drawBitmap(tilt_left, (float) ((float) 0.05 * width),
+                float height_tilt = (float) (height - (bitmapHeight * 1.3)); // height/2
+                canvas.drawBitmap(tilt_left, (float) ((float) 0.01 * width),
                         height_tilt, null);
                 canvas.drawBitmap(tilt_right,
-                        (float) ((float) 0.95 * width - tilt_right.getWidth()),
+                        (float) ((float) 0.99 * width - tilt_right.getWidth()),
                         height_tilt, null);
             }
         }
