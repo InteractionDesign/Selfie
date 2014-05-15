@@ -157,6 +157,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		List<String> supported = new ArrayList<String>();
 		if (effectList.size() > 10) {
     		supported.add(effectList.get(0));
+    		supported.add(effectList.get(1));
+    		supported.add(effectList.get(2));
     		supported.add(effectList.get(4));
     		supported.add(effectList.get(5));
     		supported.add(effectList.get(9));
