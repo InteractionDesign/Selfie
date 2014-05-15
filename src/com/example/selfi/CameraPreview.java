@@ -1,6 +1,7 @@
 package com.example.selfi;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -148,9 +149,18 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	}
 
 	public void changeFilter(String direction){
+	    //mCamera.stopPreview();
+	    
 		Parameters parameters = mCamera.getParameters();
 		//parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
 		List<String> effectList = parameters.getSupportedColorEffects();
+		List<String> supported = new ArrayList<String>();
+		if (effectList.size() > 10) {
+    		supported.add(effectList.get(0));
+    		supported.add(effectList.get(4));
+    		supported.add(effectList.get(5));
+    		supported.add(effectList.get(9));
+		}
 		
 		// prevent the app from crashing on the phones that do not support colours
 		if (effectList != null) {
@@ -158,22 +168,27 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     		
     		if(direction.equalsIgnoreCase("right")){
     			currentEffect += 1;
-    			if(currentEffect == effectList.size()){
+    			if(currentEffect == supported.size()){
     				currentEffect = 0;
     			}
     		}else if(direction.equalsIgnoreCase("left")){
     			currentEffect -= 1;
     			if(currentEffect == -1){
-    				currentEffect = effectList.size() -1;
+    				currentEffect = supported.size() -1;
     			}
     		}else{
     			currentEffect = 0;
     		}
-    		parameters.setColorEffect(effectList.get(currentEffect));
+    		parameters.setColorEffect(supported.get(currentEffect));
+    		String current = parameters.getColorEffect();
+    		if (current == null) {
+    		    Log.d("dimochka", "Error starting camera preview: ");
+    		}
     		
 		} 
 
 		mCamera.setParameters(parameters);
+		//mCamera.startPreview();
 	}
 
 	public void setCameraDisplayOrientation(Activity activity, int cameraId) {

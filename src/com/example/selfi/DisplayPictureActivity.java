@@ -6,13 +6,10 @@ import com.example.selfi.ShakeDetector.OnShakeListener;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.support.v4.app.NavUtils;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,7 +18,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.os.Build;
 
 @SuppressLint("NewApi")
 public class DisplayPictureActivity extends Activity {
