@@ -55,8 +55,40 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 				}
 			}
 		}
-		return pictureSizes.get(0);
+		return getBestPreviewSize();
 	}
+	
+	@SuppressLint("NewApi")
+	private Camera.Size getBestPreviewSize()
+	  {
+	        Display display = caller.getWindowManager().getDefaultDisplay();
+	        Point windowSize = new Point();
+	        display.getSize(windowSize);
+	        int width = windowSize.x;
+	        int height = windowSize.y;
+
+	        Camera.Size result = null;
+	        Camera.Parameters p = mCamera.getParameters();
+	        for (Camera.Size size : p.getSupportedPreviewSizes()) {
+	            if ((size.width <= width && size.height <= height)
+	                    || (size.height <= width && size.width <= height)) {
+	                if (result == null) {
+	                    result = size;
+	                } else {
+	                    int resultArea = result.width * result.height;
+	                    int newArea = size.width * size.height;
+
+	                    if ((newArea > resultArea)) {
+	                        result = size;
+	                    }
+	                }
+	            }
+	        }
+	        result.width = 1280;
+	        result.height = 720;
+	        return result;
+	  }
+
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -87,44 +119,44 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-		// If your preview can change or rotate, take care of those events here.
-		// Make sure to stop the preview before resizing or reformatting it.
+	    // If your preview can change or rotate, take care of those events here.
+	    // Make sure to stop the preview before resizing or reformatting it.
 
-		if (mHolder.getSurface() == null) {
-			// preview surface does not exist
-			return;
-		}
+	    if (mHolder.getSurface() == null) {
+	      // preview surface does not exist
+	      return;
+	    }
 
-		// stop preview before making changes
-		try {
-			mCamera.stopPreview();
-		} catch (Exception e) {
-		}
+	    // stop preview before making changes
+	    try {
+	      mCamera.stopPreview();
+	    } catch (Exception e) {
+	    }
 
-		// set preview size and make any resize, rotate or
-		// reformatting changes here
-		/*    Parameters parameters = mCamera.getParameters();
-        parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
-        List<String> effectList = parameters.getSupportedColorEffects();
-        parameters.setColorEffect(effectList.get(1));
+	    // set preview size and make any resize, rotate or
+	    // reformatting changes here
+	    Parameters parameters = mCamera.getParameters();
+	    mPictureSize = getBestPreviewSize();
+	        //parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
+	        parameters.setPreviewSize(mPictureSize.width, mPictureSize.height);
 
-        mCamera.setParameters(parameters);*/
-		// here 1 stands for front camera
-		setCameraDisplayOrientation(this.caller, 1);
-		// start preview with new settings
-		try {
-			mCamera.setPreviewDisplay(mHolder);
-			mCamera.startPreview();
+	        mCamera.setParameters(parameters);
+	    // here 1 stands for front camera
+	    setCameraDisplayOrientation(this.caller, 1);
+	    // start preview with new settings
+	    try {
+	      mCamera.setPreviewDisplay(mHolder);
+	      mCamera.startPreview();
 
-		} catch (Exception e) {
-			Log.d("dimochka",
-					"Error starting camera preview: " + e.getMessage());
-		}
-	}
+	    } catch (Exception e) {
+	      Log.d("dimochka",
+	          "Error starting camera preview: " + e.getMessage());
+	    }
+	  } 
 
 	public void changeFilter(String direction){
 		Parameters parameters = mCamera.getParameters();
-		parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
+		//parameters.setPictureSize(mPictureSize.width, mPictureSize.height);
 		List<String> effectList = parameters.getSupportedColorEffects();
 		
 		// prevent the app from crashing on the phones that do not support colours
